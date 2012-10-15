@@ -15,6 +15,9 @@ class PostsController < ApplicationController
 
   def create
     @post = Post.new(params[:post])
+    if @post.post_with_identity == '1'
+      @post.user_id = current_user.id
+    end
     if @post.save
       current_user.up_vote(@post)
       redirect_to post_path(@post), :notice => "Successfully created feedback."
