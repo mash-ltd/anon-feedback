@@ -15,14 +15,24 @@
     .pull-right
       = link_to "Show", post_path(id: post)
       |
-      .icon-thumbs-up
-      = link_to "Agree (#{post.up_votes})", vote_up_post_path(id: post)
-      |
-      .icon-thumbs-down
-      = link_to "Disagree (#{post.down_votes})", vote_down_post_path(id: post)
-      |
-      \--
-      = link_to "Remove vote", nullify_vote_path(id: post)
+      - if current_user.down_voted?(post)
+        .icon-thumbs-up
+        = link_to "Agree (#{post.up_votes})", vote_up_post_path(id: post)
+        |
+        .icon-thumbs-down
+        = link_to "Disagreed (#{post.down_votes})", nullify_vote_path(id: post)
+      - elsif current_user.up_voted?(post)
+        .icon-thumbs-up
+        = link_to "Agreed (#{post.up_votes})", nullify_vote_path(id: post)
+        |
+        .icon-thumbs-down
+        = link_to "Disagree (#{post.down_votes})", vote_down_post_path(id: post)
+      - else
+        .icon-thumbs-up
+        = link_to "Agree (#{post.up_votes})", vote_up_post_path(id: post)
+        |
+        .icon-thumbs-down
+        = link_to "Disagree (#{post.down_votes})", vote_down_post_path(id: post)
       %br
       .pull-right
         - if current_user && current_user.user_role == "admin"
