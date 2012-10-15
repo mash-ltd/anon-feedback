@@ -32,4 +32,4 @@
     %br
     .pull-right
       - if current_user && current_user.user_role == "admin"
-        = link_to "delete", destroy_post_path(@post), :confirm => 'Are you sure?', :method => :delete
+        = link_to "Delete", destroy_post_path(@post), :confirm => 'Are you sure?', :method => :delete
