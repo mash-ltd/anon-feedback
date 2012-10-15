@@ -1,0 +1,52 @@
+!!!
+%html
+  %head
+    %title Anonymous Feedback
+    = stylesheet_link_tag    "application", media: "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  
+  %body.body
+    .navbar.navbar-inverse.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          %ul.nav
+            %li.brand
+              = link_to "Feedback", root_path, class: 'active'
+          %ul.nav.pull-right
+            - if current_user
+              %li.active
+                = link_to "Add Feedback", add_post_path
+              %li.divider-vertical
+              %li.dropdown
+                %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
+                  = current_user.username
+                  %b.caret
+                %ul.dropdown-menu{role: 'menu', :"aria-labelledby" => "user-management"}
+                  %li
+                    = link_to "Edit profile", edit_user_registration_path(current_user)
+                  %li.divider
+                  %li
+                    = link_to "Sign out", destroy_user_session_path, :method => :delete
+            - else
+              %li.dropdown
+                %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
+                  Sign in
+                  %b.caret
+                %ul.dropdown-menu{role: 'menu', :"aria-labelledby" => "user-management"}
+                  .container-fluid
+                    = yield :new_session
+    .container-fluid
+      - unless notice.nil?
+        .alert.alert-success
+          = notice
+          %a.close{:href => "#", :data => {:dismiss => "alert"}} &times;
+      - unless alert.nil?
+        .alert.alert-error
+          = alert
+          %a.close{:href => "#", :data => {:dismiss => "alert"}} &times;
+      .row-fluid
+        - if current_user
+          = yield
+        - else
+          = yield :new_user

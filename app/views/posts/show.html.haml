@@ -1,0 +1,25 @@
+.well.clearfix
+  - if @post.project
+    %h4
+      = @post.project.name
+  %h5
+    - if @post.user
+      = @post.user.username
+    - else
+      Anonymous
+
+  = @post.content
+  <br/>
+  .pull-right
+    .icon-thumbs-up
+    = link_to "Agree (#{@post.up_votes})", vote_up_post_path(id: @post)
+    |
+    .icon-thumbs-down
+    = link_to "Disagree (#{@post.down_votes})", vote_down_post_path(id: @post)
+    |
+    \--
+    = link_to "Remove vote", nullify_vote_path(id: @post)
+    <br/>
+    .pull-right
+      - if current_user && current_user.user_role == "admin"
+        = link_to "delete", destroy_post_path(@post), :confirm => 'Are you sure?', :method => :delete
