@@ -2,7 +2,7 @@
 
 body {
 	padding: {
-		top: 70px;
+		top: 40px;
 	}
 }
 
@@ -10,4 +10,18 @@ body {
 	.brand {
 		padding: 2px 15px;
 	}
+}
+
+.modal {
+	form {
+		margin: 0;
+	}
+}
+
+a:focus {
+	outline: none;
+}
+
+:focus {
+	outline: none;
 }

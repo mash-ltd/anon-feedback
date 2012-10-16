@@ -28,8 +28,12 @@ class PostsController < ApplicationController
 
   def destroy
     @post = Post.find(params[:id])
-    @post.destroy
-    redirect_to root_path, alert: "Successfully destroyed post."
+    if current_user.user_role == "admin"
+      @post.destroy
+      redirect_to root_path, notice: "Successfully removed feedback."
+    else
+      redirect_to root_path, alert: "You are not allowed to remove feedbacks."
+    end
   end
 
   ##################

@@ -16,7 +16,7 @@
           %ul.nav.pull-right
             - if current_user
               %li.active
-                = link_to "Add Feedback", add_post_path
+                = link_to "Add Feedback", '#addFeedback', :'data-toggle' => 'modal'
               %li.divider-vertical
               %li.dropdown
                 %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
@@ -37,6 +37,7 @@
                   .container-fluid
                     = yield :new_session
     .container-fluid
+      %br
       - unless notice.nil?
         .alert.alert-success
           = notice
@@ -50,3 +51,30 @@
           = yield
         - else
           = yield :new_user
+
+#addFeedback.modal.fade.hide{tabindex: "-1"}
+  = form_for @new_post, url: create_post_path do |f|
+    .modal-header
+      %a.close{"data-dismiss" => "modal"} &#215;
+      %h3 Adding new feedback
+    .modal-body
+      .form-horizontal
+        .control-group
+          .control-label
+            = f.label :content, "Content:"
+          .controls
+            = f.text_area :content, placeholder: "Add your feedback ...", rows: 7
+            %br
+            %br
+          .control-label
+            = f.label :project_id, "Project: (Optional)"
+          .controls
+            = f.collection_select :project_id, @projects, :id, :name, prompt: true
+            %br
+            %br
+          .controls
+            .checkbox
+              = f.check_box :post_with_identity
+              = f.label :post_with_identity, "Post using your identity", type: "checkbox"
+    .modal-footer
+      = f.submit "Create Post", class: "btn btn-primary"

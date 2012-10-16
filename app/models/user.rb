@@ -13,5 +13,5 @@ class User < ActiveRecord::Base
 
   validates_presence_of :username, :email
   validates_uniqueness_of :username, :email
-  validates_format_of :email, with: /^[a-zA-Z0-9._%+-]+@mashsolvents.com$/, on: :create
+  validates_format_of :email, with: /^[a-zA-Z0-9._%+-]+@mashsolvents.com$/
 end
