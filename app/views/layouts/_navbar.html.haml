@@ -1,0 +1,89 @@
+.navbar.navbar-inverse.navbar-fixed-top
+  .navbar-inner
+    .container-fluid
+      %ul.nav
+        %li.brand
+          = link_to "Feedback", root_path, class: 'active'
+      %ul.nav.pull-right
+        - if current_user
+          %li.linkUnfocus
+            = link_to "Add Feedback", '#addFeedback', :'data-toggle' => 'modal'
+          %li.divider-vertical
+          %li.linkUnfocus
+            = link_to "Private feedback", '#sendMessage', :'data-toggle' => 'modal'
+          %li.divider-vertical
+          %li.dropdown
+            %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
+              = current_user.username
+              %b.caret
+            %ul.dropdown-menu{role: 'menu', :"aria-labelledby" => "user-management"}
+              %li
+                = link_to "Edit profile", edit_user_registration_path(current_user)
+              %li.divider
+              %li
+                = link_to "Sign out", destroy_user_session_path, :method => :delete
+        - else
+          %li.dropdown
+            %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
+              Sign in
+              %b.caret
+            %ul.dropdown-menu{role: 'menu', :"aria-labelledby" => "user-management"}
+              .container-fluid
+                = yield :new_session
+
+#addFeedback.modal.fade.hide{tabindex: "-1"}
+  = form_for new_post, url: create_post_path, remote: true do |f|
+    .modal-header
+      %a.close{"data-dismiss" => "modal"} &#215;
+      %h3 Adding new feedback
+    .modal-body
+      .form-horizontal
+        .control-group
+          .control-label
+            = f.label :content, "Content:"
+          .controls
+            = f.text_area :content, placeholder: "Add your feedback ...", rows: 7
+            %br
+            %br
+          .control-label
+            = f.label :project_id, "Project: (Optional)"
+          .controls
+            = f.collection_select :project_id, projects, :id, :name, prompt: true
+            %br
+            %br
+          .controls
+            .checkbox
+              = f.check_box :post_using_identity
+              = f.label :post_using_identity, "Post using your identity", type: "checkbox"
+    .modal-footer
+      = f.submit "Create Post", class: "btn btn-primary"
+
+#sendMessage.modal.fade.hide{tabindex: "-1"}
+  = form_for new_message, url: create_message_path, remote: true do |f|
+    .modal-header
+      %a.close{"data-dismiss" => "modal"} &#215;
+      %h3 Send private feedback
+    .modal-body
+      .form-horizontal
+        .control-group
+          .control-label
+            = f.label :user_id, "To:"
+          .controls
+            = f.collection_select :user_id, users, :id, :username, prompt: true
+          %br
+          .control-label
+            = f.label :content, "Content:"
+          .controls
+            = f.text_area :content, placeholder: "Add your private feedback ...", rows: 7
+          %br
+          .control-label
+            = f.label :project_id, "Project: (Optional)"
+          .controls
+            = f.collection_select :project_id, projects, :id, :name, prompt: true
+          %br
+          .controls
+            .checkbox
+              = f.check_box :message_using_identity
+              = f.label :message_using_identity, "Send using your identity", type: "checkbox"
+    .modal-footer
+      = f.submit "Send Feedback", class: "btn btn-primary"

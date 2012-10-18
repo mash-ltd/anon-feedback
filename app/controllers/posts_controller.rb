@@ -8,21 +8,19 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
   end
 
-  def new
-    @post = Post.new
-    @projects = Project.all(order: "name ASC")
-  end
-
   def create
     @post = Post.new(params[:post])
-    if @post.post_with_identity == '1'
+    if @post.post_using_identity == '1'
       @post.user_id = current_user.id
     end
-    if @post.save
-      current_user.up_vote(@post)
-      redirect_to post_path(@post), :notice => "Successfully created feedback."
-    else
-      render :action => 'new'
+    respond_to do |format|
+      if @post.save
+        current_user.up_vote(@post)
+        format.html { redirect_to post_path(@post), :notice => "Successfully created feedback." }
+        format.js { render :close_feedback }
+      else
+        format.js
+      end
     end
   end
 

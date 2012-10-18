@@ -7,35 +7,7 @@
     = csrf_meta_tags
   
   %body.body
-    .navbar.navbar-inverse.navbar-fixed-top
-      .navbar-inner
-        .container-fluid
-          %ul.nav
-            %li.brand
-              = link_to "Feedback", root_path, class: 'active'
-          %ul.nav.pull-right
-            - if current_user
-              %li.active
-                = link_to "Add Feedback", '#addFeedback', :'data-toggle' => 'modal'
-              %li.divider-vertical
-              %li.dropdown
-                %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
-                  = current_user.username
-                  %b.caret
-                %ul.dropdown-menu{role: 'menu', :"aria-labelledby" => "user-management"}
-                  %li
-                    = link_to "Edit profile", edit_user_registration_path(current_user)
-                  %li.divider
-                  %li
-                    = link_to "Sign out", destroy_user_session_path, :method => :delete
-            - else
-              %li.dropdown
-                %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
-                  Sign in
-                  %b.caret
-                %ul.dropdown-menu{role: 'menu', :"aria-labelledby" => "user-management"}
-                  .container-fluid
-                    = yield :new_session
+    = render partial: "layouts/navbar", locals: {new_post: @new_post, new_message: @new_message, users: @users, projects: @projects}
     .container-fluid
       %br
       - unless notice.nil?
@@ -52,29 +24,3 @@
         - else
           = yield :new_user
 
-#addFeedback.modal.fade.hide{tabindex: "-1"}
-  = form_for @new_post, url: create_post_path do |f|
-    .modal-header
-      %a.close{"data-dismiss" => "modal"} &#215;
-      %h3 Adding new feedback
-    .modal-body
-      .form-horizontal
-        .control-group
-          .control-label
-            = f.label :content, "Content:"
-          .controls
-            = f.text_area :content, placeholder: "Add your feedback ...", rows: 7
-            %br
-            %br
-          .control-label
-            = f.label :project_id, "Project: (Optional)"
-          .controls
-            = f.collection_select :project_id, @projects, :id, :name, prompt: true
-            %br
-            %br
-          .controls
-            .checkbox
-              = f.check_box :post_with_identity
-              = f.label :post_with_identity, "Post using your identity", type: "checkbox"
-    .modal-footer
-      = f.submit "Create Post", class: "btn btn-primary"

@@ -2,13 +2,15 @@ Myapp::Application.routes.draw do
   
   devise_for :users
   
+  match 'messages' => 'messages#index', :as => :messages
+  match 'messages/:id' => 'messages#show', :as => :message
+  match 'create_message' => 'messages#create', :as => :create_message
   match 'posts/:id' => 'posts#show', :as => :post
-  match 'add_post' => 'posts#new', :as => :add_post
   match 'create_post' => 'posts#create', :as => :create_post
+  match 'posts/:id/destroy' => 'posts#destroy', :as => :destroy_post
   match 'posts/:id/vote_up' => 'posts#vote_up', :as => :vote_up_post
   match 'posts/:id/vote_down' => 'posts#vote_down', :as => :vote_down_post
   match 'posts/:id/nullify_vote' => 'posts#nullify_vote', :as => :nullify_vote
-  match 'posts/:id/destroy' => 'posts#destroy', :as => :destroy_post
 
   root :to => 'posts#index'
 

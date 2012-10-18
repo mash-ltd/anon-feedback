@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   
   def do_common_stuff
     @new_post = Post.new
+    @new_message = Message.new
     @projects = Project.all(order: "name ASC")
+    @users = User.all(order: "username ASC")
   end
 end

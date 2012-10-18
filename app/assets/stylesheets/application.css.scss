@@ -18,8 +18,10 @@ body {
 	}
 }
 
-a:focus {
-	outline: none;
+.linkUnfocus {
+	a:focus {
+		outline: none;
+	}
 }
 
 :focus {

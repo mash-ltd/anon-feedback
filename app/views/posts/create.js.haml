@@ -1,0 +1,2 @@
+$('.messagesErrors').remove()
+$('#addFeedback .modal-body').prepend('#{ escape_javascript render(partial: "errors", locals: {errors: @post.errors.full_messages}) }')

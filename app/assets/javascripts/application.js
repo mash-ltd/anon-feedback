@@ -15,3 +15,5 @@
 //= require_tree .
 // Import bootstrap javascripts
 //= require bootstrap
+
+$('.sendMessageModal').replaceWith($('<%= escape_javascript(#sendMessageModal) %>'))
