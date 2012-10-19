@@ -1,2 +1,29 @@
-%h1 Messages#index
-%p Find me in app/views/messages/index.html.haml
+%h3 Messages
+
+%table.table
+  - unless @messages.nil?
+    %tr
+      %td.span2
+        Sender
+      %td.span2
+        Project
+      %td
+        Content
+    - @messages.each do |message|
+      %tr
+        %td
+          - if message.sender
+            = message.sender.username.camelcase
+          - else
+            Anonymous
+        %td
+          - if message.project
+            = message.project.name
+          - else
+            \--
+
+        %td
+          = message.content.camelcase.truncate(140, separator: ' ', omission: " ...")
+          - if message.content.length > 140
+            %small
+              = link_to "See more", message_path(message.id)
