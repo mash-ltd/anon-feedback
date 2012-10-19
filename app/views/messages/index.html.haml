@@ -1,7 +1,9 @@
 %h3 Messages
 
 %table.table
-  - unless @messages.nil?
+  - if @messages.empty?
+    You haven't had any private feedbacks up till now.
+  - else
     %tr
       %td.span2
         Sender

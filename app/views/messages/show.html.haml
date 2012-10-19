@@ -1,13 +1,17 @@
-.well.clearfix
-  %h4
-    Message from
-    - if @message.sender.nil?
-      = @message.sender
-    - else
-      a Masher
-  
-  = @message.content.camelcase
+- if @message.receiver == current_user
+  .well.clearfix
+    %h4
+      Message from
+      - if @message.sender.nil?
+        = @message.sender
+      - else
+        a Masher
+    
+    = @message.content.camelcase
 
+    %br
+    .pull-right
+      = link_to "Back", :back
+- else
   %br
-  .pull-right
-    = link_to "Back", :back
+  %h4 Sorry, you don't have permission to view other people's messages :)
